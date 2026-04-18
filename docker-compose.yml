@@ -1,0 +1,27 @@
+services:
+  braincell-mcp:
+    build:
+      context: ../
+      dockerfile: ITL.BrainCell.Mcp/Dockerfile
+    image: itlusions/braincell-mcp:latest
+    container_name: braincell-mcp
+    ports:
+      - "9506:9506"
+    environment:
+      - DATABASE_URL=${DATABASE_URL:-postgresql://braincell:braincell@braincell-postgres:5432/braincell}
+      - WEAVIATE_URL=${WEAVIATE_URL:-http://braincell-weaviate:8080}
+      - REDIS_URL=${REDIS_URL:-redis://braincell-redis:6379}
+      - ENVIRONMENT=${ENVIRONMENT:-production}
+    networks:
+      - braincell-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9506/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  braincell-network:
+    external: true
+    name: braincell-network

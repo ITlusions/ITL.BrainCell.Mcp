@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "itl-braincell-mcp"
+version = "0.1.0"
+description = "BrainCell MCP server — Model Context Protocol interface"
+requires-python = ">=3.12"
+dependencies = [
+    "itl-braincell",
+    "mcp>=1.11.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
