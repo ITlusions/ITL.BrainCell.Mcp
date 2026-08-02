@@ -1,5 +1,6 @@
 # Dockerfile for BrainCell MCP Server (Model Context Protocol)
-# Build context must be D:\repos\ (parent of all ITL.BrainCell* repos)
+# Build context: d:\repos (parent directory)
+# Copies core modules from ITL.BrainCell repo and installs dependencies
 FROM python:3.12-alpine AS builder
 
 WORKDIR /build
@@ -16,13 +17,15 @@ WORKDIR /app
 
 RUN apk add --no-cache postgresql-client curl
 
+# Copy installed packages from builder
 COPY --from=builder /build/python-packages /usr/local/lib/python3.12/site-packages
 
-# Copy shared core from ITL.BrainCell
-COPY ITL.BrainCell/src/core src/core
-COPY ITL.BrainCell/src/cells src/cells
-COPY ITL.BrainCell/src/services src/services
-COPY ITL.BrainCell/src/__init__.py src/__init__.py
+# Copy BrainCell SDK (shared core library)
+COPY ITL.Braincell.SDK/src /sdk/src
+COPY ITL.Braincell.SDK/pyproject.toml /sdk/pyproject.toml
+
+# Install SDK in development mode
+RUN cd /sdk && pip install --no-cache-dir -e .
 
 # Copy MCP-specific code
 COPY ITL.BrainCell.Mcp/src/mcp src/mcp

@@ -22,11 +22,11 @@ from fastapi import FastAPI
 from mcp.server.fastmcp import FastMCP
 import uvicorn
 
-from src.core.config import get_settings
-from src.core.database import SessionLocal, init_db
-from src.cells.decisions.model import DesignDecision
-from src.cells.snippets.model import CodeSnippet
-from src.cells.architecture_notes.model import ArchitectureNote
+from itl_braincell_sdk.core.config import get_settings
+from itl_braincell_sdk.core.database import SyncSessionLocal, init_db
+from itl_braincell_sdk.cells.decisions.model import DesignDecision
+from itl_braincell_sdk.cells.snippets.model import CodeSnippet
+from itl_braincell_sdk.cells.architecture_notes.model import ArchitectureNote
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -46,7 +46,7 @@ mcp = FastMCP("braincell", stateless_http=True)
 # Any cell that implements register_mcp_tools() is discovered and registered
 # here — adding a new cell automatically exposes its tools without touching
 # this file.
-from src.cells import discover_cells as _discover_cells
+from itl_braincell_sdk.cells import discover_cells as _discover_cells
 
 for _cell in _discover_cells():
     _cell.register_mcp_tools(mcp)
@@ -72,7 +72,7 @@ async def search_memory(
         if not query:
             return {"error": "query is required"}
         
-        db = SessionLocal()
+        db = SyncSessionLocal()
         results = []
         query_lower = query.lower()
         
@@ -144,7 +144,7 @@ async def get_relevant_context(
         if not query:
             return {"error": "query is required"}
         
-        db = SessionLocal()
+        db = SyncSessionLocal()
         
         try:
             query_lower = query.lower()
@@ -197,7 +197,7 @@ async def list_memories(
     with optional filtering by type.
     """
     try:
-        db = SessionLocal()
+        db = SyncSessionLocal()
         results = []
         
         try:
@@ -291,7 +291,7 @@ async def health():
     """Health check endpoint for monitoring and load balancers."""
     try:
         # Check database connectivity
-        db = SessionLocal()
+        db = SyncSessionLocal()
         from sqlalchemy import text
         db.execute(text("SELECT 1"))
         db.close()

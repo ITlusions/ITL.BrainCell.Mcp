@@ -7,9 +7,11 @@ from fastapi import FastAPI, Request, HTTPException
 import uvicorn
 from sqlalchemy import text
 
-from src.core.config import get_settings
-from src.core.database import SessionLocal, init_db
-from src.models import DesignDecision, CodeSnippet, ArchitectureNote
+from itl_braincell_sdk.core.config import get_settings
+from itl_braincell_sdk.core.database import SyncSessionLocal, init_db
+from itl_braincell_sdk.cells.decisions.model import DesignDecision
+from itl_braincell_sdk.cells.snippets.model import CodeSnippet
+from itl_braincell_sdk.cells.architecture_notes.model import ArchitectureNote
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

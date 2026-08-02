@@ -2,10 +2,13 @@ mcp==1.11.0
 fastapi==0.115.0
 uvicorn[standard]==0.30.1
 SQLAlchemy==2.0.36
+asyncpg==0.30.0
 psycopg2-binary==2.9.11
 pydantic==2.12.5
 pydantic-settings==2.5.2
 python-dotenv==1.0.1
+
+# BrainCell SDK is installed from local source during Docker build
 
 # Vector DB
 weaviate-client==4.19.2

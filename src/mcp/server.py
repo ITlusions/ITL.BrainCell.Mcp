@@ -21,17 +21,19 @@ from pydantic import BaseModel
 import uvicorn
 from sqlalchemy.orm import Session
 
-from src.core.config import get_settings
-from src.core.database import SessionLocal, init_db
-from src.models import (
-    Conversation, DesignDecision, ArchitectureNote,
-    CodeSnippet, ContextSnapshot, FileDiscussed, MemorySession
-)
-from src.schemas import (
+from itl_braincell_sdk.core.config import get_settings
+from itl_braincell_sdk.core.database import SyncSessionLocal, init_db
+from itl_braincell_sdk.cells.conversations.model import Conversation
+from itl_braincell_sdk.cells.decisions.model import DesignDecision
+from itl_braincell_sdk.cells.architecture_notes.model import ArchitectureNote
+from itl_braincell_sdk.cells.snippets.model import CodeSnippet
+from itl_braincell_sdk.cells.sessions.model import MemorySession
+from itl_braincell_sdk.cells.files_discussed.model import FileDiscussed
+from itl_braincell_sdk.core.schemas import (
     ConversationCreate, DecisionCreate, ArchitectureNoteCreate,
     CodeSnippetCreate, ContextSnapshotCreate, FileDiscussedCreate
 )
-from src.weaviate_service import get_weaviate_service
+from itl_braincell_sdk.services.weaviate_service import get_weaviate_service
 
 # Configure logging
 logging.basicConfig(
